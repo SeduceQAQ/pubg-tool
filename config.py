@@ -1,16 +1,24 @@
 """道具名称 → 游戏快捷键映射配置"""
 
-# Vosk 中文模型名称（首次运行会自动下载到当前目录）
+from collections.abc import Callable
+
+# 匹配回调类型: (道具名称, 按键) -> None
+type MatchCallback = Callable[[str, str], None]
+
+# Vosk 中文模型名称
 VOSK_MODEL_NAME = "vosk-model-small-cn-0.22"
 
 # 音频参数
 SAMPLE_RATE = 16000  # Vosk 推荐采样率
 CHUNK_SIZE = 4000  # 每次读取的音频帧数
 
+# 防抖冷却时间（秒）— 同一道具在此时间内不会重复触发
+COOLDOWN_SECONDS: float = 1.0
+
 # 道具名称 → 游戏快捷键映射
 # 键: 语音识别可能输出的中文文本（支持多个别名）
 # 值: 对应的游戏快捷键（需与 PUBG 游戏设置中的绑定一致）
-ITEM_KEY_MAP = {
+ITEM_KEY_MAP: dict[str, str] = {
     "手雷": "g",
     "蓝圈": "h",
     "闪光弹": "t",
@@ -19,7 +27,7 @@ ITEM_KEY_MAP = {
 }
 
 # 别名映射（口语化表达 → 标准名称）
-ITEM_ALIASES = {
+ITEM_ALIASES: dict[str, str] = {
     "雷": "手雷",
     "手雷": "手雷",
     "蓝色": "蓝圈",
